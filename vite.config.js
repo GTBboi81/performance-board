@@ -5,16 +5,10 @@ import { resolve } from 'path'
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react()],
-  base: './', // ★この行を追加してください（相対パスになります）
-  server: {
-    proxy: {
-      '/api': {
-        target: 'https://REPLACE-WITH-CONOHA-DOMAIN', // TODO: ConoHa WING の公開URLに変更
-        changeOrigin: true,
-        secure: true,
-      },
-    },
-  },
+  // サブディレクトリ配置（例: /performance-board/）でも動くよう相対パスで出力する
+  base: './',
+  // 開発サーバーの proxy は置いていない。Vite は PHP を実行できないため、
+  // PHP を含む動作確認は `npm run build && php -S 127.0.0.1:8090 -t dist` で行う（README 参照）。
   build: {
     emptyOutDir: true, // ビルド時にdistフォルダをクリア
     rollupOptions: {

@@ -57,6 +57,30 @@ node scripts/build-demo-cache.mjs
 
 `demo/pb_config.demo.json` と `demo/cache/` は、保護のため通常のFTPSデプロイ対象から除外しています。デモ設定・キャッシュを更新する場合は、対象ファイルだけを本番の `performance_board/` 配下へ直接配置してください。
 
+### ローカルでの動作確認
+
+認証やデータ取得は PHP で動くため、`npm run dev` では確認できません。ビルドしてから PHP の内蔵サーバーで配信します。
+
+```bash
+npm run build
+php -S 127.0.0.1:8090 -t dist
+```
+
+`dist/` には `public/` の内容が `.htaccess` を含めてコピーされるため、本番に近い構成で確認できます。
+
+ゲストログインまで確認する場合は、サーバー側で保持している資産を `dist/` に置いてください。
+
+```bash
+cp public/config.json dist/config.json
+cp demo/pb_config.demo.json dist/performance_board/pb_config.json
+cp demo/cache/*.gz dist/performance_board/cache/
+```
+
+2点、本番と異なる挙動があります。
+
+- `php -S` は `.htaccess` を解釈しないため、`config.json` などへのアクセス制限は再現されません。遮断の確認は本番で行ってください
+- `php -S` はシングルスレッドのため、複数の同時リクエストを伴う確認には向きません
+
 ## ライセンス
 
 MIT License. 詳細は [LICENSE](LICENSE) を参照してください。
