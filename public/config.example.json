@@ -1,0 +1,54 @@
+{
+  "_comment": "このファイルをコピーして public/config.json を作成してください。config.json は .gitignore 対象で、サーバー側で保持されます。password は初回ログイン成功時に自動で bcrypt ハッシュへ移行します。guest アカウントは password を持たず、ログイン画面の「ゲストモードで見る」から使われます。",
+  "accounts": {
+    "guest": {
+      "name": "ゲスト",
+      "roleId": "guest",
+      "dashboardAccess": []
+    },
+    "admin": {
+      "password": "CHANGE_ME",
+      "name": "デモ管理者",
+      "roleId": "admin",
+      "dashboardAccess": []
+    },
+    "viewer": {
+      "password": "CHANGE_ME",
+      "name": "デモ閲覧者",
+      "roleId": "viewer",
+      "dashboardAccess": []
+    }
+  },
+  "roles": {
+    "admin": {
+      "id": "admin",
+      "name": "管理者",
+      "description": "全ての機能にアクセス可能",
+      "isSystem": true,
+      "permissions": { "*": true }
+    },
+    "viewer": {
+      "id": "viewer",
+      "name": "閲覧者",
+      "description": "閲覧のみ可能",
+      "isSystem": true,
+      "permissions": { "performance-board.view": true }
+    },
+    "guest": {
+      "id": "guest",
+      "name": "ゲスト",
+      "description": "登録不要のデモ閲覧。保存・作成・削除は不可",
+      "isSystem": true,
+      "permissions": { "performance-board.view": true }
+    }
+  },
+  "globalSettings": {
+    "appName": "実績ボード",
+    "logoLight": null,
+    "logoDark": null,
+    "hiddenBoards": [],
+    "boardNames": {}
+  },
+  "apiKey": "",
+  "dashboards": {}
+}

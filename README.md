@@ -47,9 +47,16 @@ https://kyoheitsudapf.com/performance-board/
 
 ```bash
 npm install
+cp public/config.example.json public/config.json   # 初回のみ。アカウント定義
 npm test
 npm run build
 node scripts/build-demo-cache.mjs
 ```
 
+`public/config.json` はアカウント情報を持つため追跡対象外です。`public/config.example.json` をコピーし、`CHANGE_ME` を実際のパスワードに置き換えてください。初回ログイン成功時に bcrypt ハッシュへ自動移行します。
+
 `demo/pb_config.demo.json` と `demo/cache/` は、保護のため通常のFTPSデプロイ対象から除外しています。デモ設定・キャッシュを更新する場合は、対象ファイルだけを本番の `performance_board/` 配下へ直接配置してください。
+
+## ライセンス
+
+MIT License. 詳細は [LICENSE](LICENSE) を参照してください。
