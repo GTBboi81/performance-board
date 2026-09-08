@@ -85,9 +85,13 @@ export const fetchServerConfig = async () => {
     if (response.ok) {
       const data = await response.json();
       if (data?.globalSettings && !data.dashboards) {
+        // 非管理者（ゲスト含む）には dashboards を返さないが roles は返る。
+        // roles を落とすと権限判定が DEFAULT_ROLES にフォールバックし、
+        // ボードが1件も表示できなくなるため必ず引き継ぐ。
         return {
           ...INITIAL_CONFIG,
           globalSettings: { ...DEFAULT_GLOBAL_SETTINGS, ...data.globalSettings },
+          ...(data.roles ? { roles: data.roles } : {}),
         };
       }
       if (data && data.dashboards) {
