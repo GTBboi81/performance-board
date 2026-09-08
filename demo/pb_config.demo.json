@@ -1,0 +1,148 @@
+{
+  "dashboards": {
+    "demo-call-center": {
+      "id": "demo-call-center",
+      "name": "デモ・コールセンター実績",
+      "appName": "Performance Board Demo",
+      "dataSources": [
+        {
+          "id": "calls",
+          "name": "架電実績（デモ）",
+          "sourceType": "spreadsheet",
+          "spreadsheetId": "",
+          "sheetName": "Calls",
+          "headers": ["日付", "担当者", "チーム", "架電数", "接続数", "商談数", "通話時間（分）"],
+          "keyColumnIndex": 1,
+          "dateColumnIndex": 0
+        },
+        {
+          "id": "targets",
+          "name": "月間目標（デモ）",
+          "sourceType": "spreadsheet",
+          "spreadsheetId": "",
+          "sheetName": "Targets",
+          "headers": ["担当者", "チーム", "月間目標"],
+          "keyColumnIndex": 0,
+          "dateColumnIndex": null
+        }
+      ],
+      "mapping": {
+        "id": { "sourceId": "calls", "columnIndex": 1, "columnName": "担当者" },
+        "date": { "sourceId": "calls", "columnIndex": 0, "columnName": "日付" },
+        "agent": { "sourceId": "calls", "columnIndex": 1, "columnName": "担当者" },
+        "team": { "sourceId": "calls", "columnIndex": 2, "columnName": "チーム" },
+        "callCount": { "sourceId": "calls", "columnIndex": 3, "columnName": "架電数" },
+        "connectionCount": { "sourceId": "calls", "columnIndex": 4, "columnName": "接続数" },
+        "meetingCount": { "sourceId": "calls", "columnIndex": 5, "columnName": "商談数" },
+        "talkMinutes": { "sourceId": "calls", "columnIndex": 6, "columnName": "通話時間（分）" },
+        "monthlyTarget": { "sourceId": "targets", "columnIndex": 2, "columnName": "月間目標" }
+      },
+      "systemFields": [
+        { "id": "id", "label": "担当者ID", "type": "string" },
+        { "id": "date", "label": "日付", "type": "date" },
+        { "id": "agent", "label": "担当者", "type": "string" },
+        { "id": "team", "label": "チーム", "type": "string" },
+        { "id": "callCount", "label": "架電数", "type": "number" },
+        { "id": "connectionCount", "label": "接続数", "type": "number" },
+        { "id": "meetingCount", "label": "商談数", "type": "number" },
+        { "id": "talkMinutes", "label": "通話時間（分）", "type": "number" },
+        { "id": "monthlyTarget", "label": "月間目標", "type": "number" }
+      ],
+      "calculations": [
+        {
+          "id": "connectionRate",
+          "label": "接続率",
+          "type": "arithmetic",
+          "format": "percent",
+          "terms": [{ "field": "connectionCount" }, { "operator": "/", "field": "callCount" }]
+        },
+        {
+          "id": "meetingRate",
+          "label": "商談化率",
+          "type": "arithmetic",
+          "format": "percent",
+          "terms": [{ "field": "meetingCount" }, { "operator": "/", "field": "connectionCount" }]
+        }
+      ],
+      "filters": [
+        { "id": "filter_date", "field": "date", "label": "日付" },
+        { "id": "filter_team", "field": "team", "label": "チーム" },
+        { "id": "filter_agent", "field": "agent", "label": "担当者" }
+      ],
+      "sections": [
+        { "id": "section_activity", "title": "活動実績", "fields": ["callCount", "connectionCount", "meetingCount", "talkMinutes"], "width": "full" },
+        { "id": "section_rate", "title": "コンバージョン", "fields": ["connectionRate", "meetingRate", "monthlyTarget"], "width": "full" }
+      ],
+      "visibleFields": ["date", "agent", "team", "callCount", "connectionCount", "meetingCount", "talkMinutes", "connectionRate", "meetingRate", "monthlyTarget"],
+      "dataTables": [
+        {
+          "id": "daily-performance",
+          "name": "日次・担当者別実績",
+          "sourceId": "calls",
+          "fields": ["date", "agent", "team", "callCount", "connectionCount", "meetingCount", "talkMinutes", "connectionRate", "meetingRate"],
+          "width": "full",
+          "size": "large",
+          "metricFilters": []
+        },
+        {
+          "id": "team-summary",
+          "name": "チーム別サマリー",
+          "sourceId": "calls",
+          "defaultGroupBy": "by-team",
+          "fields": ["team", "callCount", "connectionCount", "meetingCount", "talkMinutes", "connectionRate", "meetingRate"],
+          "width": "half",
+          "size": "medium",
+          "metricFilters": []
+        },
+        {
+          "id": "agent-summary",
+          "name": "担当者別サマリー",
+          "sourceId": "calls",
+          "defaultGroupBy": "by-agent",
+          "fields": ["agent", "team", "callCount", "connectionCount", "meetingCount", "talkMinutes", "connectionRate", "meetingRate"],
+          "width": "half",
+          "size": "medium",
+          "metricFilters": []
+        }
+      ],
+      "compositeCards": [],
+      "chartConfigs": [
+        {
+          "id": "chart-team-meetings",
+          "title": "チーム別 商談数構成比",
+          "type": "pie",
+          "xField": "team",
+          "yFields": ["meetingCount"],
+          "aggregation": "sum",
+          "visible": true,
+          "width": "full",
+          "height": "1",
+          "colors": ["#6366f1", "#10b981", "#f59e0b", "#ef4444", "#8b5cf6"]
+        }
+      ],
+      "rankingCards": [],
+      "headingCards": [],
+      "layoutOrder": [
+        { "id": "layout-activity", "type": "kpiSection", "refId": "section_activity", "visible": true, "width": "full" },
+        { "id": "layout-rate", "type": "kpiSection", "refId": "section_rate", "visible": true, "width": "full" },
+        { "id": "layout-team-meetings", "type": "chart", "refId": "chart-team-meetings", "visible": true, "width": "full" },
+        { "id": "layout-daily", "type": "dataTable", "refId": "daily-performance", "visible": true, "width": "full" },
+        { "id": "layout-team", "type": "dataTable", "refId": "team-summary", "visible": true, "width": "half" },
+        { "id": "layout-agent", "type": "dataTable", "refId": "agent-summary", "visible": true, "width": "half" }
+      ],
+      "pivotTables": [],
+      "comparisonTables": [],
+      "vendorPivotTables": [],
+      "aggregationConfigs": [
+        { "id": "detail", "label": "明細", "groupByField": "", "displayFields": ["date", "agent", "team", "callCount", "connectionCount", "meetingCount", "talkMinutes"] },
+        { "id": "by-team", "label": "チーム別", "groupByField": "team", "displayFields": ["callCount", "connectionCount", "meetingCount", "talkMinutes", "connectionRate", "meetingRate"] },
+        { "id": "by-agent", "label": "担当者別", "groupByField": "agent", "displayFields": ["callCount", "connectionCount", "meetingCount", "talkMinutes", "connectionRate", "meetingRate"] }
+      ],
+      "mainKey": { "sourceId": "calls", "columnIndex": 1 },
+      "dateSettings": { "type": "source", "sourceId": "calls", "columnIndex": 0, "simpleConfig": { "sourceId": "calls" } },
+      "defaultFilters": { "dateRange": "all" },
+      "allowedRoles": []
+    }
+  },
+  "activeId": "demo-call-center"
+}

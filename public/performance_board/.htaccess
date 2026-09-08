@@ -1,0 +1,52 @@
+# 実績ボード — キャッシュ配信設定
+
+# gzip圧縮済みJSONの配信
+<IfModule mod_headers.c>
+    <FilesMatch "\.json\.gz$">
+        Header set Content-Type "application/json; charset=utf-8"
+        Header set Content-Encoding "gzip"
+        Header set Cache-Control "no-cache, must-revalidate"
+    </FilesMatch>
+</IfModule>
+
+# ログファイル・ロックファイルへのアクセス禁止
+<FilesMatch "\.(log|lock)$">
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        Order Deny,Allow
+        Deny from all
+    </IfModule>
+</FilesMatch>
+
+<Files "pb_config.json">
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        Order Deny,Allow
+        Deny from all
+    </IfModule>
+</Files>
+
+<Files "cron_runner.php">
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        Order Deny,Allow
+        Deny from all
+    </IfModule>
+</Files>
+
+# セッションキャッシュへのアクセス禁止
+<FilesMatch "^_sf_session">
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        Order Deny,Allow
+        Deny from all
+    </IfModule>
+</FilesMatch>

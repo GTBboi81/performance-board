@@ -1,0 +1,38 @@
+node_modules
+dist
+.env
+.env.*
+.DS_Store
+Thumbs.db
+
+# AI開発ツールの作業ファイル
+.claude/
+.harness-mem/
+
+# サーバー側で生成・保持されるファイル（絶対にコミットしない）
+public/sf_config.php
+public/performance_board/cache/
+public/api/analytics/sf_credentials.json
+
+# Added by ftp-deploy init-env
+.ftp-deploy-state/
+.ftp-deploy.json
+
+# PHP セッション実体（.htaccess のみ追跡する）
+public/sessions/*
+!public/sessions/.htaccess
+
+# アカウント情報を含むためコミットしない（サーバー側で保持）
+public/config.json
+
+# ハーネス生成物
+out/
+
+# 作業用バックアップ
+*.bak.*
+
+# ハーネスの計画・仕様メモ（社名や脆弱性の詳細を含むため公開しない）
+Plans.md
+Plans.md.bak.*
+spec.md
+docs/

@@ -1,0 +1,128 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* シフト管理テーブルのストライプを無効化 */
+table tbody tr:nth-child(odd),
+table tbody tr:nth-child(even) {
+  background-color: inherit !important;
+}
+
+/* Recharts Tooltipを常に最前面に表示 */
+.recharts-tooltip-wrapper {
+  z-index: 99999 !important;
+  pointer-events: none;
+}
+
+.recharts-wrapper {
+  overflow: visible !important;
+}
+
+.recharts-surface {
+  overflow: visible !important;
+}
+
+/* スクロールバーを非表示にするユーティリティ */
+.hide-scrollbar {
+  -ms-overflow-style: none;  /* IE, Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;  /* Chrome, Safari, Opera */
+}
+
+/* シフト管理テーブル - 固定列の右側をカバーする壁（boxShadowで実装） */
+/* 注意: ::afterは罫線用に使うため、壁はboxShadowで対応 */
+
+/* 名前セルの赤枠を固定するための擬似要素 */
+.staff-name-alert-frame {
+  position: relative;
+  box-sizing: border-box;
+}
+.staff-name-alert-frame::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border: 3px solid #ef4444;
+  border-radius: 8px;
+  box-shadow: 0 0 8px rgba(239, 68, 68, 0.5);
+  pointer-events: none;
+  z-index: 100;
+  box-sizing: border-box;
+}
+
+/* 固定列の罫線を擬似要素で描画（横スクロール時も固定） */
+.sticky-border-frame {
+  position: relative;
+  box-sizing: border-box;
+}
+.sticky-border-frame::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  z-index: 100;
+  box-sizing: border-box;
+}
+
+/* 名前セル用（左・下・右に罫線） - Tailwindのborder-gray-200/border-white/10に合わせる */
+.sticky-border-name-light::after {
+  border-left: 1px solid #e5e7eb;
+  border-bottom: 1px solid #e5e7eb;
+  border-right: 1px solid #e5e7eb;
+}
+.sticky-border-name-dark::after {
+  border-left: 1px solid rgba(255, 255, 255, 0.1);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  border-right: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* メモセル用（下・右に罫線） */
+.sticky-border-memo-light::after {
+  border-bottom: 1px solid #e5e7eb;
+  border-right: 1px solid #e5e7eb;
+}
+.sticky-border-memo-dark::after {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  border-right: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* 合計セル用（下・右に罫線） - 最終行用 */
+.sticky-border-total-light::after {
+  border-bottom: 1px solid #e5e7eb;
+  border-right: 1px solid #e5e7eb;
+}
+.sticky-border-total-dark::after {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  border-right: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* 合計セル用（右のみ） - 中間行用 */
+.sticky-border-total-mid-light::after {
+  border-right: 1px solid #e5e7eb;
+}
+.sticky-border-total-mid-dark::after {
+  border-right: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* ローディングバーアニメーション */
+@keyframes loading-bar {
+  0% {
+    width: 0%;
+    margin-left: 0%;
+  }
+  50% {
+    width: 60%;
+    margin-left: 20%;
+  }
+  100% {
+    width: 0%;
+    margin-left: 100%;
+  }
+}

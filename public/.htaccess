@@ -1,0 +1,31 @@
+# performance-board — 公開ディレクトリのアクセス制御
+#
+# config.json はアカウント情報（ID・パスワード・ロール定義）を保持するため、
+# HTTP 経由での直接ダウンロードを禁止する。
+# アプリからは login.php / save_config.php を経由して読むため、この遮断で問題は起きない。
+
+<FilesMatch "^config\.json$">
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        Order Deny,Allow
+        Deny from all
+    </IfModule>
+</FilesMatch>
+
+# バックアップ・退避ファイルの流出防止
+<FilesMatch "\.(json\.bak|bak|orig|save|swp|tmp)$">
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        Order Deny,Allow
+        Deny from all
+    </IfModule>
+</FilesMatch>
+
+# ディレクトリ一覧の表示を禁止
+<IfModule mod_autoindex.c>
+    Options -Indexes
+</IfModule>

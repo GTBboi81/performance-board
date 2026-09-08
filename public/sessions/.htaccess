@@ -1,0 +1,10 @@
+# PHP セッションファイルの保存先。HTTP からの直接アクセスを全面禁止する。
+# login.php / save_config.php が session.save_path としてこのディレクトリを使う。
+
+<IfModule mod_authz_core.c>
+    Require all denied
+</IfModule>
+<IfModule !mod_authz_core.c>
+    Order Deny,Allow
+    Deny from all
+</IfModule>

@@ -1,0 +1,32 @@
+{
+  "version": 1,
+  "defaultTarget": "production",
+  "defaults": {
+    "ignoreGlobs": [
+      "**/.git/**",
+      "**/node_modules/**",
+      "**/*.map",
+      "**/.env",
+      "**/.env.*",
+      "**/*credential*.json",
+      "**/sf_config.php",
+      "**/config.json",
+      "**/sessions/**",
+      "**/performance_board/pb_config.json"
+    ]
+  },
+  "targets": {
+    "production": {
+      "description": "Production FTP deployment",
+      "protocol": "ftps",
+      "host": "<YOUR_FTP_HOST>",
+      "port": 21,
+      "user": "<YOUR_FTP_USER>",
+      "passwordEnvKey": "FTP_PROD_PASSWORD",
+      "remotePath": "<YOUR_REMOTE_PATH>",
+      "localPath": "dist",
+      "buildCommand": "npm run build",
+      "deleteOrphans": false
+    }
+  }
+}
